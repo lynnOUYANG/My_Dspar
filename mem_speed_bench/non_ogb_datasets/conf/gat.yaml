@@ -1,0 +1,16 @@
+name: GAT
+loop: true
+norm: true
+
+params:
+  reddit:
+    arch_name: GAT
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+
+
+    optim: rmsprop
+    lr: 0.01
+    epochs: 2000

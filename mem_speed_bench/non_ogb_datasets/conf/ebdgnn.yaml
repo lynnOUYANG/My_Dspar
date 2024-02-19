@@ -1,0 +1,82 @@
+name: EbdGNN
+norm: true
+loop: true
+params:
+  reddit1:
+    arch_name: EbdGNN
+    gnn_type: gcn
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      drop_input: false
+      batch_norm: true
+      residual: false
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+
+  reddit2:
+    arch_name: EbdGNN
+    gnn_type: gcn2
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      drop_input: true
+      batch_norm: true
+      residual: false
+      shared_weights: false
+      alpha: 0.1
+      theta: 0.5
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+
+  reddit3:
+    arch_name: EbdGNN
+    gnn_type: sgc
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      batch_norm: true
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+
+  reddit4:
+    arch_name: EbdGNN
+    gnn_type: appnp
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      batch_norm: true
+      alpha: 0.5
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+
+  reddit5:
+    arch_name: EbdGNN
+    gnn_type: gat
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      batch_norm: true
+      residual: true
+    optim: rmsprop
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128

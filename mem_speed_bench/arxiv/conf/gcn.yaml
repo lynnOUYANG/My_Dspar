@@ -1,0 +1,15 @@
+name: GCN
+loop: true
+normalize: true
+architecture:
+  num_layers: 3
+  hidden_channels: 128
+  dropout: 0.5
+  batch_norm: true
+  residual: false
+
+grad_norm: 0.5
+optim: adam
+lr: 0.01
+epochs: 500
+log_steps: 1

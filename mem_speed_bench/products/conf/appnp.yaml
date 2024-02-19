@@ -1,0 +1,15 @@
+name: APPNP
+loop: true
+normalize: true
+architecture:
+  num_layers: 2
+  hidden_channels: 128
+  alpha: 0.5
+  dropout: 0.1
+  batch_norm: true
+
+
+optim: adam
+lr: 0.01
+epochs: 2000
+log_steps: 1

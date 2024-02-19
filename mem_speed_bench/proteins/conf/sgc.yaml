@@ -1,0 +1,13 @@
+name: SGC
+loop: true
+normalize: true
+architecture:
+  num_layers: 2
+  hidden_channels: 128
+  dropout: 0.5
+  batch_norm: true
+
+
+optim: adam
+lr: 0.01
+epochs: 2000

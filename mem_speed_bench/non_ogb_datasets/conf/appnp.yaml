@@ -1,0 +1,17 @@
+name: APPNP
+loop: true
+norm: true
+params:
+  reddit1:
+    arch_name: APPNP
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      alpha: 0.5
+      dropout: 0.5
+      batch_norm: true
+
+
+    optim: adam
+    lr: 0.01
+    epochs: 2000
