@@ -107,9 +107,9 @@ def mix(model, data, optimizer, index=0):
 
     idx_untrain = torch.tensor((torch.where(data.val_mask)[0].cpu().numpy().tolist()) + (
         torch.where(data.test_mask)[0].cpu().numpy().tolist())).to(idx_train.device)
-    # target = torch.nn.functional.one_hot(data.y.long(), num_classes=41).to(data.x.device)
-    # target = target.float()
-    target=data.y.float()
+    target = torch.nn.functional.one_hot(data.y.long(), num_classes=41).to(data.x.device)
+    target = target.float()
+    # target=data.y.float()
 
 
     index = 0
