@@ -107,8 +107,10 @@ def mix(model, data, optimizer, index=0):
 
     idx_untrain = torch.tensor((torch.where(data.val_mask)[0].cpu().numpy().tolist()) + (
         torch.where(data.test_mask)[0].cpu().numpy().tolist())).to(idx_train.device)
-    target = torch.nn.functional.one_hot(data.y.long(), num_classes=41).to(data.x.device)
-    target = target.float()
+    # target = torch.nn.functional.one_hot(data.y.long(), num_classes=41).to(data.x.device)
+    # target = target.float()
+    target=data.y.float()
+
 
     index = 0
     if index == 0:
@@ -607,8 +609,9 @@ def main():
     infer_time_list = []
     test_acc_list = []
     train_time_list = []
-    args.runs = 1
+    # args.runs = 1
     for run in range(args.runs):
+
         # data.edge_index=edge_index
         data.adj_t = adj_t
         model.reset_parameters()
@@ -654,7 +657,7 @@ def main():
                       f'Epoch: {epoch:02d}, '
                       f'Train Loss: {loss:.4f}')
 
-            if model_config['name'] == 'GCN' or model_config['name'] == 'GCN2':
+            if model_config['name'] in ['GCN', 'GCN2', 'SGC', 'APPNP']:
                 data_train = data
                 data_train.adj_t = adj_t
             if model_config['name'] == 'EbdGNN':
@@ -727,7 +730,7 @@ def main():
 
         logger.add_result(run, result)
         logger.print_statistics(run)
-
+    logger.print_statistics()
     infer_time_list = np.array(infer_time_list)
     infer_time_mean = infer_time_list.mean()
     print(f"the mean infer time of each epoch is :{infer_time_mean:.5f}")
