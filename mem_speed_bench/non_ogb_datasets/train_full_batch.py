@@ -34,7 +34,7 @@ from sklearn.cluster import KMeans
 from sklearn.random_projection import SparseRandomProjection
 from sklearn.decomposition import TruncatedSVD
 import torch.nn as nn
-import GPUtil
+# import GPUtil
 
 MB = 1024 ** 2
 GB = 1024 ** 3
@@ -468,29 +468,27 @@ def main():
     #     model.load_state_dict(checkpoint['net'])
     #     optimizer.load_state_dict(checkpoint['optimizer'])
     #     start_epoch = checkpoint['epoch'] + 1
-    with open(args.conf, 'r') as fp:
-        model_config = yaml.load(fp, Loader=yaml.FullLoader)
+
+
 
     with open(args.conf, 'r') as fp:
         model_config = yaml.load(fp, Loader=yaml.FullLoader)
-    # with open(args.conf, 'r') as fp:
-    #     model_config = yaml.load(fp, Loader=yaml.FullLoader)
-    #     name = model_config['name']
-    #     loop = model_config.get('loop', False)
-    #     normalize = model_config.get('norm', False)
-    #     model_config = model_config['params'][args.dataset]
-    #     model_config['name'] = name
-    #     model_config['loop'] = loop
-    #     model_config['normalize'] = normalize
-    #     if model_config['name']=='EbdGNN':
-    #         if model_config['gnn_type']=='sage':
-    #             model_config['loop'] = False
-    #             model_config['normalize'] = False
-    #     model_config['device']='cuda:'+str(args.gpu)
-    #     if args.test_time:
-    #         model_config['epochs']=20
-    #         if model_config['name'] == 'EbdGNN':
-    #             model_config['pepochs']=10
+        name = model_config['name']
+        loop = model_config.get('loop', False)
+        normalize = model_config.get('norm', False)
+        model_config = model_config['params'][args.dataset]
+        model_config['name'] = name
+        model_config['loop'] = loop
+        model_config['normalize'] = normalize
+        if model_config['name']=='EbdGNN':
+            if model_config['gnn_type']=='sage':
+                model_config['loop'] = False
+                model_config['normalize'] = False
+        model_config['device']='cuda:'+str(args.gpu)
+        if args.test_time:
+            model_config['epochs']=20
+            if model_config['name'] == 'EbdGNN':
+                model_config['pepochs']=10
 
     print(f'model config: {model_config}')
     if args.dataset == 'yelp':
@@ -758,4 +756,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    print('a')
