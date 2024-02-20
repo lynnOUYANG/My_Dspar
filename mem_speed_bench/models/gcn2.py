@@ -1,14 +1,27 @@
 from tqdm import tqdm
 import torch
 import torch.nn.functional as F
-
+import numpy as np
 from torch import Tensor
 from torch.nn import ModuleList, BatchNorm1d, Linear
 from torch_sparse import SparseTensor
 from torch_geometric.nn import GCN2Conv
-
-
-
+import random
+from torch.nn.parameter import Parameter
+def mixup_gnn_hidden(x, target, train_idx, alpha):
+    if alpha > 0.:
+        lam = np.random.beta(alpha, alpha)
+    else:
+        lam = 1.
+    # print(train_idx)
+    # exit()
+    permuted_train_idx = train_idx[torch.randperm(train_idx.shape[0])]
+    # x[train_idx] = lam*x[train_idx]+ (1-lam)*x[permuted_train_idx]
+    mixed_x = lam * x[train_idx] + (1 - lam) * x[permuted_train_idx]
+    # 注意：以下行为不会对x进行原地操作，因为mixed_x已经是一个新的变量
+    x_clone=x.clone()
+    x_clone[train_idx] = mixed_x
+    return x_clone, target[train_idx], target[permuted_train_idx],lam
 class GCN2(torch.nn.Module):
     def __init__(self, in_channels: int, hidden_channels: int,
                  out_channels: int, num_layers: int, alpha: float, theta: float = None, 
@@ -18,6 +31,7 @@ class GCN2(torch.nn.Module):
 
         self.in_channels = in_channels
         self.out_channels = out_channels
+        self.weight = Parameter(torch.Tensor(in_channels, self.out_channels))
         self.dropout = torch.nn.Dropout(p=dropout)
         self.drop_input = drop_input
         if drop_input:
@@ -84,6 +98,24 @@ class GCN2(torch.nn.Module):
         x = self.dropout(x)
         x = self.lins[1](x)
         return x
+    def forward_aux(self, x, target=None, train_idx=None, mixup_input=False, mixup_hidden=True, mixup_alpha=1.0,
+                    layer_mix=[1],adj_t=None):
+
+        if mixup_hidden == True or mixup_input == True:
+            if mixup_hidden == True:
+                layer_mix = random.choice(layer_mix)
+            elif mixup_input == True:
+                layer_mix = 0
+
+
+            if layer_mix == 1:
+                x, target_a, target_b, lam = mixup_gnn_hidden(x, target, train_idx, mixup_alpha)
+
+            x = self.dropout(x)
+            x = torch.mm(x,self.weight)
+
+
+        return x, target_a, target_b, lam
 
 
     @torch.no_grad()
