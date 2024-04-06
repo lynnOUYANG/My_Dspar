@@ -2,7 +2,7 @@ name: SGC
 loop: true
 norm: true
 params:
-  reddit1:
+  reddit:
     arch_name: APPNP
     architecture:
       num_layers: 2

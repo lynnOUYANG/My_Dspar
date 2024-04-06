@@ -1,0 +1,54 @@
+name: EbdGNN
+normalize: true
+loop: true
+params:
+  gcn:
+    gnn_type: gcn
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      batch_norm: true
+      residual: false
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+    adjust_lr: false
+    use_labels: false
+    log_steps: 1
+
+  gcn2:
+    gnn_type: gcn2
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      batch_norm: true
+      residual: false
+      alpha: 0.2
+      theta: 0.5
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+    log_steps: 1
+    adjust_lr: false
+    use_labels: false
+
+  sage:
+    gnn_type: sage
+    architecture:
+      num_layers: 2
+      hidden_channels: 128
+      dropout: 0.5
+      batch_norm: true
+      residual: false
+    optim: adam
+    lr: 0.01
+    epochs: 1500
+    pepochs: 128
+    bepochs: 128
+    log_steps: 1
